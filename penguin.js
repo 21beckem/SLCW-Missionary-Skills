@@ -4,9 +4,12 @@ for (let i = 0; i < penguinInputs.length; i++) {
 }
 
 function sliderChange(thisEl) {
-	for (let i=0; i<penguinInputs.length; i++) {
-  	const value = Number(penguinInputs[i].value) / 100;
-    penguinInputs[i].style.setProperty("--thumb-rotate", `${value * 720}deg`);
-    penguinInputs[i].nextElementSibling.innerHTML = Math.round(value * 10);
-  }
+    for (let i=0; i<penguinInputs.length; i++) {
+        const value = Number(penguinInputs[i].value) / 100;
+        penguinInputs[i].style.setProperty("--thumb-rotate", `${value * 720}deg`);
+        penguinInputs[i].nextElementSibling.innerHTML = Math.round(value * 5);
+    }
+}
+function snapPenguinToPos(thisEl) {
+    thisEl.value = Math.round(thisEl.value / 20) * 20;
 }
