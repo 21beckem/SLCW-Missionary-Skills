@@ -10,7 +10,8 @@ This is what each object looks like:
 {
   "label" : "First Name (not Elder or Sister)",
   "type" : "text",
-  "conditional" : false
+  "conditional" : false,
+  "required" : true
 }
 ```
 
@@ -20,6 +21,7 @@ This is what each object looks like:
     * `"bool"` - for *yes* or *no*
     * `"range"` - for a slider between 1 and 5
 * `"conditional"` Tells the website to only show this question of the next nonconditional question above it is marked as *yes*
+* `"required"` tells whether or not the question should be required to submit the form.
 
 ## Common Fixes
 

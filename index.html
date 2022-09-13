@@ -10,7 +10,23 @@
 <body>
     <div id="screenCover" style="display:none">
         <div class="center_me">
-            <div class="loader"></div>
+            <div id="loader"></div>
+            <div id="success_box" style="display:none" class="alert_box">
+                <center>
+                    <h1>Success!</h1>
+                    <br>
+                    <p>Your skills information has been submitted and saved by the Mission</p>
+                    <button id="submit_another" onclick="document.location.reload(true)">Submit Another Response</button>
+                </center>
+            </div>
+            <div id="oof_box" style="display:none" class="alert_box">
+                <center>
+                    <h1>Oof! Sorry.</h1>
+                    <br>
+                    <p>Sorry something went wrong as we were saving the info. :/</p>
+                    <button id="submit_another" onclick="submitForm()">Try Again</button>
+                </center>
+            </div>
         </div>
     </div>
     <br><br>
@@ -23,7 +39,7 @@
         </div>
     </center>
     <!--<form method="POST" action="https://www.w3schools.com/action_page.php">-->
-    <form id="TheForm" method="POST" action="https://script.google.com/macros/s/AKfycbwQ8OO3qix1lFtys4b6XSPFcnJGLXz3JwzMBRA9HeFtuKc-4-yI0AZF3t16F6NvKfERqw/exec">
+    <form id="TheForm" method="POST" action="">
         <center>
             <div id="formBox"></div>
         </center>

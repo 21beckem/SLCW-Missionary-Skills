@@ -2,102 +2,122 @@ const formJson = [
     {
         "label" : "First Name (not Elder or Sister)",
         "type" : "text",
-        "conditional" : false
+        "conditional" : false,
+        "required" : true
     },
     {
         "label" : "Last Name",
         "type" : "text",
-        "conditional" : false
+        "conditional" : false,
+        "required" : true
     },
     {
         "label" : "In what month and year did you start the MTC?",
         "type" : "text",
-        "conditional" : false
+        "conditional" : false,
+        "required" : true
     },
     {
         "label" : "Do you play a musical instrument at a level you would be comfortable performing in front of a large group of people?",
         "type" : "bool",
-        "conditional" : false
+        "conditional" : false,
+        "required" : true
     },
     {
         "label" : "If so, what instruments do you play? Please list them.",
         "type" : "text",
-        "conditional" : true
+        "conditional" : true,
+        "required" : true
     },
     {
         "label" : "How well do you play each of these intruments?",
         "type" : "text",
-        "conditional" : true
+        "conditional" : true,
+        "required" : true
     },
     {
         "label" : "Do you enjoy singing?",
         "type" : "bool",
-        "conditional" : false
+        "conditional" : false,
+        "required" : true
     },
     {
         "label" : "If so, are you willing to sing a solo?",
         "type" : "bool",
-        "conditional" : true
+        "conditional" : true,
+        "required" : false
     },
     {
         "label" : "Do you have experience with technical issues related to phones or computers?",
         "type" : "bool",
-        "conditional" : false
+        "conditional" : false,
+        "required" : true
     },
     {
         "label" : "x",
         "type" : "range",
-        "conditional" : true
+        "conditional" : true,
+        "required" : true
     },
     {
         "label" : "Do you have programming experience?",
         "type" : "bool",
-        "conditional" : false
+        "conditional" : false,
+        "required" : true
     },
     {
         "label" : "How would you rate your skills?",
         "type" : "range",
-        "conditional" : true
+        "conditional" : true,
+        "required" : true
     },
     {
         "label" : "Do you have experience with video production and/or editing?",
         "type" : "bool",
-        "conditional" : false
+        "conditional" : false,
+        "required" : true
     },
     {
         "label" : "How would you rate your skills?",
         "type" : "range",
-        "conditional" : true
+        "conditional" : true,
+        "required" : true
     },
     {
         "label" : "Are you interested in working in our social media district?",
         "type" : "bool",
-        "conditional" : false
+        "conditional" : false,
+        "required" : true
     },
     {
         "label" : "Do you have experience repairing bicycles?",
         "type" : "bool",
-        "conditional" : false
+        "conditional" : false,
+        "required" : true
     },
     {
         "label" : "How would you rate your skills?",
         "type" : "range",
-        "conditional" : true
+        "conditional" : true,
+        "required" : true
     },
     {
         "label" : "Do you have technical experience with audio visual technology?",
         "type" : "bool",
-        "conditional" : false
+        "conditional" : false,
+        "required" : true
     },
     {
         "label" : "How would you rate your skills?",
         "type" : "range",
-        "conditional" : true
+        "conditional" : true,
+        "required" : true
     },
     {
         "label" : "Any other comments you would like to make?",
         "type" : "text",
-        "conditional" : false
+        "conditional" : false,
+        "required" : false
     }
 ];
 const hash = window.location.hash.substr(1);
@@ -114,7 +134,8 @@ function makeForm(pasteBoxId = "formBox") {
         const inputNum = "q" + i;
         const el = formJson[i];
         const condish = (el.conditional) ? " conditional_Q" : "";
-        const required = (el.conditional) ? "" : " required";
+        const reqBool = (el.required) ? " required" : "";
+        const required = (el.conditional) ? "" : reqBool;
 
         switch (el.type) {
             case "text":
@@ -146,9 +167,8 @@ function makeForm(pasteBoxId = "formBox") {
 <div id="` + inputNum + `_question" class="question` + condish + `">
     <label for="` + inputNum + `">` + el.label + `</label>
     <div class="bool_container">`
-        let amount = 5;
-        for (let ii = 1; ii <= amount; ii++) {
-           toWrite += `<label class="bool_option" style="width:` + (100 / amount) + `%">
+        for (let ii = 1; ii <= 5; ii++) {
+           toWrite += `<label class="bool_option" style="width:` + (100 / 5) + `%">
                 <input id="` + inputNum + `_radio" type="radio" name="` + inputNum + `" value="` + ii + `" onclick="updateConditionals(this)" ` + required + ` class="required_toggle">
                 <span class="bool_active">` + ii + `</span>
             </label>` 
@@ -190,7 +210,7 @@ function makeForm(pasteBoxId = "formBox") {
                     counter++;
                 }
             }
-            conditionals.push([_(prevNum+"_radio"), _(inputNum+"_question")]);
+            conditionals.push([_(prevNum+"_radio"), _(inputNum+"_question"), el]);
         }
     }
     updateHash();
@@ -203,7 +223,7 @@ function updateConditionals(thisEl) {
     for (let i = 0; i < conditionals.length; i++) {
         const q = conditionals[i];
         q[1].style.display = (q[0].checked) ? "block" : "";
-        q[1].querySelector('.required_toggle').required = q[0].checked;
+        q[1].querySelector('.required_toggle').required = (q[0].checked) ? q[2].required : false;
 
         // clear answer if conditional turned off
         if (!q[0].checked) {
@@ -224,30 +244,61 @@ function updateConditionals(thisEl) {
     thisEl.parentNode.classList.add('active_selection');
 }
 
+function fixFormData(thisData) {
+    for (let i = 0; i < formJson.length; i++) {
+        const el = formJson[i];
+        const name = "q" + i;
+        if (el.type == 'range') {
+            let current = thisData.get(name);
+            current = current / 20;
+            thisData.set(name, current);
+        }
+    }
+    return thisData;
+}
 
+window.onbeforeunload = () => {  
+    window.scrollTo(0, 0);  
+};
 
 window.addEventListener("load", function() {
     const form = document.getElementById('TheForm');
     form.addEventListener("submit", function(e) {
         e.preventDefault();
-        _('screenCover').style.display = "block";
-        const data = new FormData(form);
-        const action = e.target.action;
-        fetch(action, {
-            method: 'POST',
-            body: data,
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            _('screenCover').style.display = "none";
-            if (data.result == "success") {
-                alert("Success, your input has been saved")
-            } else {
-                alert("Oh no, there's been an error. Please try again later");
-            }
-        })
+        submitForm();
     });
 });
+
+function submitForm() {
+    _('loader').style.display = "block";
+    _('success_box').style.display = "none";
+    _('screenCover').style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    _('oof_box').style.display = "none";
+
+    const form = document.getElementById('TheForm');
+    _('screenCover').style.display = "block";
+    const data = fixFormData(new FormData(form));
+    console.log(data);
+    const action = "https://script.google.com/macros/s/AKfycbwQ8OO3qix1lFtys4b6XSPFcnJGLXz3JwzMBRA9HeFtuKc-4-yI0AZF3t16F6NvKfERqw/exec";
+    fetch(action, {
+        method: 'POST',
+        body: data,
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        submitResponseHandler(data.result == "success")
+    })
+}
+
+function submitResponseHandler(res) {
+    _('loader').style.display = "none";
+    if (res) {
+        _('success_box').style.display = "block";
+        _('screenCover').style.backgroundColor = 'rgb(232, 247, 255)';
+    } else {
+        _('oof_box').style.display = "block";
+    }
+}
 
 // dealing with the hash
 function changeQuestionsBackground(color) {
