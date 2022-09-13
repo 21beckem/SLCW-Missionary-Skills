@@ -159,7 +159,7 @@ function makeForm(pasteBoxId = "formBox") {
                 } else {
                     toWrite += `
 <div id="` + inputNum + `_question" class="question` + condish + `">
-    <input id="slider" name="slider" type="range" value=0 oninput="sliderChange(this)" onmouseup="snapPenguinToPos(this)" class="required_toggle">
+    <input id="slider" name="` + inputNum + `" type="range" value=0 oninput="sliderChange(this)" onmouseup="snapPenguinToPos(this)" class="required_toggle">
     <div class="range_label" for="slider">0</div>
 </div>`;
                 }
