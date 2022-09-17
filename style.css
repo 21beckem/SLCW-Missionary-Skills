@@ -1,3 +1,8 @@
+@font-face {
+    font-family: ComicFont;
+    src: url(fonts/COMIC.TTF);
+}
+
 .hash {
     background-color: rgba(255, 255, 255, 0.4);
 }
@@ -5,7 +10,7 @@ body {
     margin: 0;
     height: 100%;
     background-color: rgb(232, 247, 255);
-    font-family: "Comic Sans MS", cursive, sans-serif;
+    font-family: ComicFont, cursive, sans-serif;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
